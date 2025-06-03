@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import db from './db';
-import jobsRoutes from './routes/jobs';
+import projectsRoutes from './routes/projects';
 
 import authRoutes from './routes/auth';
 
@@ -12,10 +12,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/api/auth', authRoutes);
-app.use('/api/jobs', jobsRoutes);
+app.use('/api/projects', projectsRoutes);
 
 app.get('/', (req, res) => {
-  res.send('JobFlow backend is running!');
+  res.send('TaskFlow backend is running!');
 });
 
 app.listen(PORT, () => {

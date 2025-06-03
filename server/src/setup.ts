@@ -12,27 +12,37 @@ async function setupDatabase() {
       );
     `);
 
-    // JOBS table
+    // PROJECTS table
     await db.query(`
-      CREATE TABLE IF NOT EXISTS jobs (
+      CREATE TABLE IF NOT EXISTS projects (
         id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-        company TEXT NOT NULL,
-        position TEXT NOT NULL,
-        location TEXT,
-        status TEXT DEFAULT 'wishlist',
-        job_posting_url TEXT,
-        applied_at DATE,
-        notes TEXT,
+        name TEXT NOT NULL,
+        description TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
+
+    // TASKS table
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS tasks (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE,
+        title TEXT NOT NULL,
+        description TEXT,
+        status TEXT DEFAULT 'todo',
+        due_date DATE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
 
     console.log('✅ Tables created successfully.');
   } catch (error) {
     console.error('❌ Error creating tables:', error);
   } finally {
-    db.end(); // Close the DB pool
+    db.end();
   }
 }
 
